@@ -13,7 +13,7 @@ import java.util.List;
 public class TodoListResponseDTO {
 
     private String error; // 에러 발생 시 에러 메세지를 담을 필드
-    private List<TodoDetailResponseDTO> todos;
+    private List<TodoDetailResponseDTO> todos; // 글 하나의 정보
 
 
 }
