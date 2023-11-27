@@ -22,7 +22,7 @@ public class UserService {
 
         String email = dto.getEmail();
 
-        if(userRepository.existsByEmail(email)){
+        if(isDuplicate(email)){
             log.warn("이메일이 중복되었습니다. - {}", email);
             throw new RuntimeException("중복된 이메일 입니다.");
         }
@@ -38,6 +38,11 @@ public class UserService {
         return new UserSignUpResponseDTO(saved);
     }
 
+
+    public boolean isDuplicate(String email) {
+
+        return userRepository.existsByEmail(email);
+    }
 
 
 }

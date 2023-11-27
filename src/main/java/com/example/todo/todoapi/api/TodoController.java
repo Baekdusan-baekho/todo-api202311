@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/todos")
-@CrossOrigin(origins = "http://localhost:3000") // 리액트와 연결하는 아노테이션 데이터를 브라우저에 보내기 성공
+@CrossOrigin // 리액트와 연결하는 아노테이션 데이터를 브라우저에 보내기 성공
 public class TodoController {
 
     private final TodoService todoService;
