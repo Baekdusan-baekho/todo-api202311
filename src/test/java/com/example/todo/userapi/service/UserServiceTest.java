@@ -1,9 +1,8 @@
 package com.example.todo.userapi.service;
 
-import com.example.todo.userapi.dto.UserRequestSignUpDTO;
+import com.example.todo.userapi.dto.request.UserRequestSignUpDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
