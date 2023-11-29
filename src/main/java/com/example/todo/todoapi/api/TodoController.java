@@ -7,6 +7,7 @@ import com.example.todo.todoapi.dto.response.TodoListResponseDTO;
 import com.example.todo.todoapi.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -40,10 +41,15 @@ public class TodoController {
         }
 
         try {
-            TodoListResponseDTO responseDTO = todoService.create(requestDTO, userInfo.getUserId());
+            TodoListResponseDTO responseDTO = todoService.create(requestDTO, userInfo);
             return ResponseEntity
                     .ok()
                     .body(responseDTO);
+        } catch (IllegalStateException e) {
+            // 권한 때문에 발생한 예외
+            log.warn(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(e.getMessage());
         } catch (RuntimeException e) {
             e.printStackTrace();
             return ResponseEntity
@@ -53,7 +59,6 @@ public class TodoController {
                             .error(e.getMessage())
                             .build());
         }
-
 
     }
 
@@ -70,15 +75,16 @@ public class TodoController {
         return ResponseEntity.ok().body(responseDTO);
     }// 필터에서 인증정보(userInfo)를 꺼내와서 컨트롤러에서 사용할 수 있다.
 
+
     // 할 일 삭제 요청
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTodo(
             @AuthenticationPrincipal TokenUserInfo userInfo,
             @PathVariable("id") String todoId
-    ){
+    ) {
         log.info("/api/todos/{} DELETE request!", todoId);
 
-        if(todoId == null || todoId.trim().equals("")){
+        if(todoId == null || todoId.trim().equals("")) {
             return ResponseEntity
                     .badRequest()
                     .body(TodoListResponseDTO
@@ -88,16 +94,12 @@ public class TodoController {
         }
 
         try {
-            TodoListResponseDTO responseDTO = todoService.delete(todoId, TokenUserInfo.getUserId());
+            TodoListResponseDTO responseDTO = todoService.delete(todoId, userInfo.getUserId());
             return ResponseEntity.ok().body(responseDTO);
         } catch (Exception e) {
             return ResponseEntity
-                    .internalServerError()
-                    .body(TodoListResponseDTO.builder().error(e.getMessage()).build());
+                    .internalServerError().body(TodoListResponseDTO.builder().error(e.getMessage()).build());
         }
-
-
-
     }
 
     // 할 일 수정하기
@@ -107,8 +109,8 @@ public class TodoController {
             @Validated @RequestBody TodoModifyRequestDTO requestDTO,
             BindingResult result,
             HttpServletRequest request
-    ){
-        if(result.hasErrors()){
+    ) {
+        if(result.hasErrors()) {
             return ResponseEntity.badRequest().body(result.getFieldError());
         }
 
@@ -121,8 +123,13 @@ public class TodoController {
         } catch (RuntimeException e) {
             return ResponseEntity
                     .internalServerError()
-                    .body(TodoListResponseDTO.builder().error(e.getMessage()).build());
+                    .body(TodoListResponseDTO
+                            .builder()
+                            .error(e.getMessage())
+                            .build());
         }
+
+
     }
 
 

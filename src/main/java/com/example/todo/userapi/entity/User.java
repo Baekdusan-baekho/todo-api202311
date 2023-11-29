@@ -9,7 +9,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Setter @Getter
+//@Setter // 엔터티는 세터가 존재하지 않을 수도 있다 신중하게 써야 한다.
+@Getter
 @ToString @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,4 +42,9 @@ public class User {
     //@ColumnDefault("'COMMON'") // 이넘타입이라 '' 넣음  문자면 안해도 됨
     @Builder.Default
     private Role role = Role.COMMON; // 유저 권한
+
+
+    public void changeRole(Role role){
+        this.role = role;
+    }
 }
