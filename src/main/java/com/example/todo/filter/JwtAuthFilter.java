@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-// 클라이언트가 전송한 토큰을 검사하는 필
+// 클라이언트가 전송한 토큰을 검사하는 필터
 @Component
 @Slf4j
 @RequiredArgsConstructor

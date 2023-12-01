@@ -14,6 +14,10 @@ spring:
     hibernate:
       ddl-auto: update # ?? DDL ?? ?? -> create? ???? ??? ???? ??? ?? ??.
     database: mysql # DB ?? ??
+  servlet:
+    multipart:
+      max-file-size: 10MB # 1개의 파일의 최대 사이즈
+      max-request-size: 20MB # 전체 요청의 최대 사이즈
 
 logging.level:
   org.hibernate.SQL: debug
@@ -26,6 +30,10 @@ springdoc:
 jwt:
   secret: fsQTyNKYPjMpDpV0BqjA9mTCg4/jV1z6BXF8pHvOFUGDSpSeiDXrXsWArg1+weTeyKhUSzDr+eSjbmc4J0UGzQ==
 
+
+# 업로드 파일 저장 경로 로컬에 저장 DB보다 싸다
+upload:
+  path: C:/todo_upload
 
 
 

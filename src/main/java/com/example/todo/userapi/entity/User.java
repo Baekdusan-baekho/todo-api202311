@@ -43,6 +43,8 @@ public class User {
     @Builder.Default
     private Role role = Role.COMMON; // 유저 권한
 
+    private String profileImg; // 이렇게 쓰면 colume 명은 profile_img로 작성된다   프로필이미지 경로
+
 
     public void changeRole(Role role){
         this.role = role;
