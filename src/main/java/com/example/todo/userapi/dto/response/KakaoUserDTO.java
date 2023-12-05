@@ -1,5 +1,6 @@
 package com.example.todo.userapi.dto.response;
 
+import com.example.todo.userapi.entity.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 public class KakaoUserDTO {
 
+    // 카카오가 주는 id
     private long id;
 
     @JsonProperty("connected_at")
@@ -37,4 +39,15 @@ public class KakaoUserDTO {
 
 
     }
+
+    public User toEntity(String accessToken){
+        return User.builder()
+                .email(this.kakaoAccount.email)
+                .userName(this.kakaoAccount.profile.nickname)
+                .password("password!")
+                .profileImg(this.kakaoAccount.profile.profileImageUrl)
+                .accessToken(accessToken)
+                .build();
+    }
+
 }

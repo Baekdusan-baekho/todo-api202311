@@ -45,8 +45,16 @@ public class User {
 
     private String profileImg; // 이렇게 쓰면 colume 명은 profile_img로 작성된다   프로필이미지 경로
 
+    private String accessToken; // 카카오 로그인 시 발급받는 accessToken을 저장 -> 로그아웃 때 필요, 다른 기능 구현할 때 사용
+
 
     public void changeRole(Role role){
         this.role = role;
+    } // 롤 직접 작성
+
+    public void setAccessToken(String accessToken){
+        this.accessToken = accessToken;
     }
+
+
 }
