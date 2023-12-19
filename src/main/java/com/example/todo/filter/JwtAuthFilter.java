@@ -2,6 +2,8 @@ package com.example.todo.filter;
 
 import com.example.todo.auth.TokenProvider;
 import com.example.todo.auth.TokenUserInfo;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -59,15 +61,16 @@ public class JwtAuthFilter  extends OncePerRequestFilter {
                         null, // 인증된 사용자의 비밀번호 - 보통 null값
                         authorityList // 인가 정보 (권한 정보)
                 );
-
                 // 인증 완료 처리 시 클라이언트의 요청 정보 세팅 (위조가 아니라는 것이 확인됐고 그것을 저장해서 또 사용하고자 한다.
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 // 스프링 시큐리티 컨테이너에 인증 정보 객체 등록
                 SecurityContextHolder.getContext().setAuthentication(auth);
-
             }
             // 필터에서 인증정보(userInfo)를 꺼내와서 컨트롤러에서 사용할 수 있다.
+        } catch(ExpiredJwtException e){
+            log.info("토큰의 기한이 만료되었습니다!");
+            throw new JwtException("토큰 기한 만료!");
         } catch (Exception e) {
             e.printStackTrace();
             log.info("서명이 일치하지 않습니다! 토큰이 위조 되었습니다!");
